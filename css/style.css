@@ -1,0 +1,462 @@
+/* ==========================================================================
+   Shared stylesheet — copied into css/style.css for every site (main + 4 apps)
+   Override --accent per app for a distinct feel while keeping one system.
+   ========================================================================== */
+
+:root {
+  --bg: #fafaf9;
+  --bg-alt: #f0efec;
+  --text: #1c1b1a;
+  --text-muted: #6b6963;
+  --border: #e2e0da;
+  --accent: #2f6f4e;      /* default green — overridden per app */
+  --accent-dark: #24563d;
+  --card-bg: #ffffff;
+  --radius: 10px;
+  --max-width: 1080px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Nav ---------- */
+header.site-nav {
+  border-bottom: 1px solid var(--border);
+  background: var(--card-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand:hover { text-decoration: none; }
+
+.brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+nav.links {
+  display: flex;
+  gap: 24px;
+  font-size: 0.95rem;
+}
+
+nav.links a { color: var(--text-muted); }
+nav.links a:hover, nav.links a.active { color: var(--text); text-decoration: none; }
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 8px;
+  margin: -8px;
+  color: var(--text);
+  cursor: pointer;
+}
+.menu-toggle svg { display: block; }
+
+@media (max-width: 640px) {
+  .menu-toggle { display: flex; }
+
+  header.site-nav .wrap { position: relative; }
+
+  nav.links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  }
+  nav.links.open { display: flex; }
+  nav.links a { padding: 14px 24px; border-top: 1px solid var(--border); }
+  nav.links a:first-child { border-top: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 88px 0 64px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+}
+
+.hero p.lead {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 0 auto 32px;
+}
+
+.cta-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent-dark); text-decoration: none; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-secondary:hover { border-color: var(--text-muted); text-decoration: none; }
+
+/* ---------- Sections ---------- */
+section { padding: 56px 0; }
+section.alt { background: var(--bg-alt); }
+
+h2.section-title {
+  font-size: 1.8rem;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+p.section-sub {
+  color: var(--text-muted);
+  margin: 0 0 36px;
+  max-width: 560px;
+}
+
+/* ---------- Cards (app grid on main site) ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.card h3 { margin: 12px 0 6px; font-size: 1.15rem; }
+.card p { color: var(--text-muted); font-size: 0.95rem; margin: 0 0 14px; }
+.card .app-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 1.1rem;
+}
+
+/* ---------- Feature list ---------- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+}
+.feature h4 { margin: 0 0 6px; font-size: 1.05rem; }
+.feature p { color: var(--text-muted); margin: 0; font-size: 0.93rem; }
+
+/* ---------- Screenshot gallery ---------- */
+.screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+.screenshot-placeholder {
+  aspect-ratio: 9 / 16;
+  background: linear-gradient(160deg, var(--bg-alt), var(--border));
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 12px;
+}
+
+/* ---------- Docs page ---------- */
+.docs-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.docs-toc {
+  position: sticky;
+  top: 88px;
+  font-size: 0.9rem;
+}
+.docs-toc a {
+  display: block;
+  padding: 6px 0;
+  color: var(--text-muted);
+}
+.docs-toc a:hover { color: var(--text); text-decoration: none; }
+.docs-content h2 { margin-top: 48px; }
+.docs-content h2:first-child { margin-top: 0; }
+.docs-content code {
+  background: var(--bg-alt);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.docs-content pre {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.docs-content h2 {
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  /* Matches .docs-toc's own sticky offset (top: 88px) — without this, clicking
+     a sidebar link scrolls the heading flush to the viewport top, which is
+     right under the 64px sticky nav bar, hiding the heading itself. */
+  scroll-margin-top: 88px;
+}
+
+.docs-content h3 {
+  margin: 32px 0 10px;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 88px;
+}
+
+.docs-content ul,
+.docs-content ol {
+  padding-left: 1.3em;
+  margin: 0 0 20px;
+}
+
+.docs-content li {
+  margin-bottom: 10px;
+}
+
+.docs-content ol.steps li {
+  margin-bottom: 14px;
+}
+
+/* Tables (field lists, theme table, key-restriction values) */
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.95rem;
+}
+
+.docs-content th,
+.docs-content td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.docs-content th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.docs-content tr:last-child td {
+  border-bottom: none;
+}
+
+/* Callout cards (tip / warn). These reuse the site-wide .card rule, so strip
+   the marketing-grid hover lift and muted body text — a callout isn't a link
+   and its text is the important part, not secondary. Colors are fixed (not
+   tied to --accent) so tip/warn stay visually distinct regardless of which
+   app's --accent override is active on a given site. */
+.docs-content .card {
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+.docs-content .card:hover {
+  transform: none;
+  box-shadow: none;
+}
+.docs-content .card p {
+  color: var(--text);
+  font-size: 1rem;
+  margin: 0;
+}
+.docs-content .card p + p { margin-top: 8px; }
+
+.docs-content .card.tip { border-left-color: #2f6f4e; }
+.docs-content .card.warn { border-left-color: #b3261e; }
+
+.docs-content .card .label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.docs-content .card.tip .label { color: #2f6f4e; }
+.docs-content .card.warn .label { color: #b3261e; }
+
+@media (max-width: 720px) {
+  .docs-layout { grid-template-columns: 1fr; }
+  .docs-toc { position: static; margin-bottom: 24px; }
+}
+
+/* ---------- Blog ---------- */
+.post-list { display: flex; flex-direction: column; gap: 24px; }
+.post-item {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+}
+.post-item .post-date { color: var(--text-muted); font-size: 0.85rem; }
+.post-item h3 { margin: 6px 0; }
+.post-item p { color: var(--text-muted); margin: 0; }
+
+article.post-body { max-width: 680px; margin: 0 auto; }
+article.post-body h1 { margin-bottom: 4px; }
+article.post-body .post-meta { color: var(--text-muted); margin-bottom: 32px; }
+
+/* ---------- Comments ---------- */
+.comments-section {
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+  margin-top: 16px;
+}
+
+/* ---------- Footer ---------- */
+footer.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+footer.site-footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer.site-footer a { color: var(--text-muted); }
+
+/* ---------- Contact form ---------- */
+.contact-form { max-width: 480px; }
+
+.form-row { margin-bottom: 20px; }
+.form-row label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.95rem;
+}
+.form-row input:focus,
+.form-row textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.form-row textarea { resize: vertical; min-height: 120px; }
+
+/* Honeypot field — hidden off-screen (not display:none, which some bots
+   skip) so sighted users and screen readers never see or fill it. Any
+   value here means whatever submitted the form isn't a person. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-form .btn { margin-top: 4px; cursor: pointer; }
+.contact-form .btn:disabled { opacity: 0.6; cursor: default; }
+
+.form-status { margin: 14px 0 0; font-size: 0.9rem; min-height: 1.3em; }
+.form-status.success { color: var(--accent-dark); }
+.form-status.error { color: #b3261e; }

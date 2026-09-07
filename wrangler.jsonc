@@ -1,0 +1,21 @@
+{
+  // IMPORTANT: this must exactly match the name of the existing Cloudflare
+  // project this repo is connected to (Workers & Pages → your project →
+  // Settings → General). If your project has a different name, change
+  // this to match it before pushing, or the build may fail or deploy to
+  // the wrong project.
+  "name": "vocogogo-site",
+  "compatibility_date": "2026-07-28",
+  "main": "worker.js",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  // Without this, Cloudflare wipes any plain Variables you set in the
+  // dashboard (CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL, SITE_NAME) every time
+  // this repo redeploys, since this file doesn't declare a "vars" block.
+  // Secrets aren't affected either way — this only matters for plain
+  // Variables. Deliberately NOT hardcoding those values here, since this
+  // file is committed to a public repo.
+  "keep_vars": true
+}

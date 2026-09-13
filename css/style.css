@@ -462,12 +462,12 @@ footer.site-footer a { color: var(--text-muted); }
 .form-status.error { color: #b3261e; }
 
 .summary { 
-  background:var(--surface); 
-  border:1px solid var(--border);
-  border-radius:var(--r-lg); 
+  background:#FFFFFF; 
+  border:1px solid #E1EBE2;
+  border-radius:22px; 
   padding:24px 26px; 
-  box-shadow:var(--lift); 
+  box-shadow:0 1px 1px color-mix(in srgb, #0F211A 5%, transparent); 
   margin:0 0 12px; }
 .summary h2 { margin-top:0; font-size:20px; }
 .summary ul { margin-bottom:0; }
-.summary li::marker { color:var(--accent); }
+.summary li::marker { color:12%; }

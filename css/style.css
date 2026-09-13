@@ -460,3 +460,14 @@ footer.site-footer a { color: var(--text-muted); }
 .form-status { margin: 14px 0 0; font-size: 0.9rem; min-height: 1.3em; }
 .form-status.success { color: var(--accent-dark); }
 .form-status.error { color: #b3261e; }
+
+.summary { 
+  background:var(--surface); 
+  border:1px solid var(--border);
+  border-radius:var(--r-lg); 
+  padding:24px 26px; 
+  box-shadow:var(--lift); 
+  margin:0 0 12px; }
+.summary h2 { margin-top:0; font-size:20px; }
+.summary ul { margin-bottom:0; }
+.summary li::marker { color:var(--accent); }

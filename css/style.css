@@ -1,20 +1,79 @@
 /* ==========================================================================
    Shared stylesheet — copied into css/style.css for every site (main + 4 apps)
-   Override --accent per app for a distinct feel while keeping one system.
+   Override --accent (and --accent-dark) per app for a distinct feel while
+   keeping one system.
+
+   The palette, type and shapes come from the VocoGogo help page. Every colour
+   is a token, so light and dark are two sets of values rather than two sets of
+   rules, and a per-app accent override still flows through everything derived
+   from it (soft fills, links, focus rings).
    ========================================================================== */
 
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap");
+
 :root {
-  --bg: #fafaf9;
-  --bg-alt: #f0efec;
-  --text: #1c1b1a;
-  --text-muted: #6b6963;
-  --border: #e2e0da;
-  --accent: #2f6f4e;      /* default green — overridden per app */
-  --accent-dark: #24563d;
-  --card-bg: #ffffff;
-  --radius: 10px;
+  color-scheme: light dark;
+
+  --bg: #FBFCF6;
+  --bg-alt: #EEF6F0;
+  --card-bg: #FFFFFF;
+  --border: #E1EBE2;
+
+  --text: #0F211A;
+  --text-muted: color-mix(in srgb, var(--text) 62%, var(--bg) 38%);
+  --text-faint: color-mix(in srgb, var(--text) 40%, var(--bg) 60%);
+
+  /* Fills. --accent-ink stays white in both themes so an app that overrides
+     --accent to any mid-dark colour keeps readable button text. */
+  --accent: #0C7D5D;
+  --accent-dark: #0A6249;
+  --accent-ink: #FFFFFF;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--card-bg) 88%);
+  --link: var(--accent-dark);
+
+  /* Secondary accent, used for notes and the warm half of the background wash. */
+  --zest: #F07319;
+  --zest-soft: color-mix(in srgb, var(--zest) 16%, var(--card-bg) 84%);
+
+  /* Semantic. Fixed meaning, so these never follow a per-app accent. */
+  --good: #2F6F4E;
+  --bad: #B3261E;
+  --bad-soft: color-mix(in srgb, var(--bad) 10%, var(--card-bg) 90%);
+
+  --wash-mint: color-mix(in srgb, var(--accent) 13%, transparent);
+  --wash-zest: color-mix(in srgb, var(--zest) 12%, transparent);
+  --lift: 0 1px 1px color-mix(in srgb, var(--text) 5%, transparent),
+          0 12px 28px -18px color-mix(in srgb, var(--text) 55%, transparent);
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
   --max-width: 1080px;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+
+  --font: "Instrument Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --display: "Bricolage Grotesque", var(--font);
+  --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #08130F;
+    --bg-alt: #172C24;
+    --card-bg: #0F1E19;
+    --border: #223A31;
+
+    --text: #E9F4EC;
+
+    /* Deep enough that white button text still passes contrast, while links
+       brighten automatically from whatever accent an app has set. */
+    --accent: #1E9E76;
+    --accent-dark: #178A66;
+    --link: color-mix(in srgb, var(--accent) 60%, #FFFFFF 40%);
+
+    --zest: #FFA24D;
+    --good: #46DDA3;
+    --bad: #FF7A5C;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -25,26 +84,47 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--accent-dark); text-decoration: none; }
+/* Soft colour wash behind every page. Fixed and non-interactive, so it costs
+   nothing but stops large light areas reading as flat white. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh -10vw auto;
+  height: 90vh;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(46vw 46vw at 12% 22%, var(--wash-mint), transparent 62%),
+    radial-gradient(40vw 40vw at 92% 6%, var(--wash-zest), transparent 60%);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+h1 { letter-spacing: -0.035em; font-weight: 800; }
+
+a { color: var(--link); text-decoration: none; text-underline-offset: 2px; text-decoration-thickness: 1.5px; }
 a:hover { text-decoration: underline; }
 
 img { max-width: 100%; display: block; }
 
 .logo-container {
-      display: flex;
-      justify-content: center; /* Centers horizontally */
-      align-items: center;     /* Centers vertically */
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .google-container {
-      display: flex;
-      justify-content: left; /* Centers horizontally */
-      align-items: left;     /* Centers vertically */
-    }
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
 
 .wrap {
   max-width: var(--max-width);
@@ -55,7 +135,8 @@ img { max-width: 100%; display: block; }
 /* ---------- Nav ---------- */
 header.site-nav {
   border-bottom: 1px solid var(--border);
-  background: var(--card-bg);
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -69,31 +150,44 @@ header.site-nav .wrap {
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.035em;
   color: var(--text);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
 }
 .brand:hover { text-decoration: none; }
 
+/* The brand dot picks up the app's accent — the one mark that differs per site. */
 .brand .dot {
-  width: 10px;
-  height: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: linear-gradient(140deg, var(--accent), var(--zest));
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.brand .dot::after {
+  content: "";
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: var(--accent);
-  display: inline-block;
+  background: var(--card-bg);
 }
 
 nav.links {
   display: flex;
   gap: 24px;
   font-size: 0.95rem;
+  font-weight: 600;
 }
 
 nav.links a { color: var(--text-muted); }
-nav.links a:hover, nav.links a.active { color: var(--text); text-decoration: none; }
+nav.links a:hover, nav.links a.active { color: var(--accent); text-decoration: none; }
 
 .menu-toggle {
   display: none;
@@ -123,7 +217,7 @@ nav.links a:hover, nav.links a.active { color: var(--text); text-decoration: non
     gap: 0;
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    box-shadow: var(--lift);
   }
   nav.links.open { display: flex; }
   nav.links a { padding: 14px 24px; border-top: 1px solid var(--border); }
@@ -137,9 +231,9 @@ nav.links a:hover, nav.links a.active { color: var(--text); text-decoration: non
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  line-height: 1.05;
   margin: 0 0 16px;
-  letter-spacing: -0.02em;
 }
 
 .hero p.lead {
@@ -159,34 +253,35 @@ nav.links a:hover, nav.links a.active { color: var(--text); text-decoration: non
 .btn {
   display: inline-block;
   padding: 12px 24px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font);
   font-weight: 600;
   font-size: 0.95rem;
   border: 1px solid transparent;
   cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 .btn-primary:hover { background: var(--accent-dark); text-decoration: none; }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--card-bg);
   color: var(--text);
   border-color: var(--border);
 }
-.btn-secondary:hover { border-color: var(--text-muted); text-decoration: none; }
+.btn-secondary:hover { background: var(--accent-soft); border-color: var(--accent); text-decoration: none; }
 
 /* ---------- Sections ---------- */
 section { padding: 56px 0; }
 section.alt { background: var(--bg-alt); }
 
 h2.section-title {
-  font-size: 1.8rem;
+  font-size: clamp(1.6rem, 3.4vw, 2rem);
   margin: 0 0 8px;
-  letter-spacing: -0.01em;
 }
 
 p.section-sub {
@@ -207,22 +302,27 @@ p.section-sub {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--lift);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: 0 2px 2px color-mix(in srgb, var(--text) 6%, transparent),
+              0 18px 36px -20px color-mix(in srgb, var(--text) 60%, transparent);
 }
 
-.card h3 { margin: 12px 0 6px; font-size: 1.15rem; }
+.card h3 { margin: 12px 0 6px; font-size: 1.2rem; }
 .card p { color: var(--text-muted); font-size: 0.95rem; margin: 0 0 14px; }
 .card .app-icon {
   width: 44px; height: 44px;
-  border-radius: 12px;
-  background: var(--accent);
+  border-radius: 14px;
+  background: linear-gradient(140deg, var(--accent), var(--zest));
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.1rem;
+  color: var(--accent-ink);
+  font-family: var(--display);
+  font-weight: 700; font-size: 1.1rem;
 }
 
 /* ---------- Feature list ---------- */
@@ -231,7 +331,7 @@ p.section-sub {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 28px;
 }
-.feature h4 { margin: 0 0 6px; font-size: 1.05rem; }
+.feature h4 { margin: 0 0 6px; font-size: 1.08rem; }
 .feature p { color: var(--text-muted); margin: 0; font-size: 0.93rem; }
 
 /* ---------- Screenshot gallery ---------- */
@@ -271,26 +371,27 @@ p.section-sub {
   padding: 6px 0;
   color: var(--text-muted);
 }
-.docs-toc a:hover { color: var(--text); text-decoration: none; }
-.docs-content h2 { margin-top: 48px; }
+.docs-toc a:hover { color: var(--accent); text-decoration: none; }
 .docs-content h2:first-child { margin-top: 0; }
 .docs-content code {
+  font-family: var(--mono);
   background: var(--bg-alt);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.9em;
 }
 .docs-content pre {
+  font-family: var(--mono);
   background: var(--bg-alt);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   padding: 16px;
   overflow-x: auto;
 }
 
 .docs-content h2 {
-  font-size: 1.6rem;
-  letter-spacing: -0.01em;
+  margin-top: 48px;
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
   /* Matches .docs-toc's own sticky offset (top: 88px) — without this, clicking
@@ -301,8 +402,7 @@ p.section-sub {
 
 .docs-content h3 {
   margin: 32px 0 10px;
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
+  font-size: 1.18rem;
   scroll-margin-top: 88px;
 }
 
@@ -314,10 +414,6 @@ p.section-sub {
 
 .docs-content li {
   margin-bottom: 10px;
-}
-
-.docs-content ol.steps li {
-  margin-bottom: 14px;
 }
 
 /* Tables (field lists, theme table, key-restriction values) */
@@ -337,11 +433,12 @@ p.section-sub {
 }
 
 .docs-content th {
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-family: var(--mono);
+  color: var(--text-faint);
+  font-weight: 400;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.1em;
 }
 
 .docs-content tr:last-child td {
@@ -350,9 +447,8 @@ p.section-sub {
 
 /* Callout cards (tip / warn). These reuse the site-wide .card rule, so strip
    the marketing-grid hover lift and muted body text — a callout isn't a link
-   and its text is the important part, not secondary. Colors are fixed (not
-   tied to --accent) so tip/warn stay visually distinct regardless of which
-   app's --accent override is active on a given site. */
+   and its text is the important part, not secondary. Colors come from the
+   semantic tokens, so tip/warn stay distinct from whichever --accent is set. */
 .docs-content .card {
   padding: 16px 20px;
   margin: 20px 0;
@@ -361,7 +457,8 @@ p.section-sub {
 }
 .docs-content .card:hover {
   transform: none;
-  box-shadow: none;
+  border-color: var(--border);
+  box-shadow: var(--lift);
 }
 .docs-content .card p {
   color: var(--text);
@@ -370,19 +467,20 @@ p.section-sub {
 }
 .docs-content .card p + p { margin-top: 8px; }
 
-.docs-content .card.tip { border-left-color: #2f6f4e; }
-.docs-content .card.warn { border-left-color: #b3261e; }
+.docs-content .card.tip { border-left-color: var(--good); }
+.docs-content .card.warn { border-left-color: var(--bad); }
 
 .docs-content .card .label {
   display: block;
-  font-weight: 700;
+  font-family: var(--mono);
+  font-weight: 500;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 6px;
 }
-.docs-content .card.tip .label { color: #2f6f4e; }
-.docs-content .card.warn .label { color: #b3261e; }
+.docs-content .card.tip .label { color: var(--good); }
+.docs-content .card.warn .label { color: var(--bad); }
 
 @media (max-width: 720px) {
   .docs-layout { grid-template-columns: 1fr; }
@@ -395,13 +493,13 @@ p.section-sub {
   border-bottom: 1px solid var(--border);
   padding-bottom: 24px;
 }
-.post-item .post-date { color: var(--text-muted); font-size: 0.85rem; }
+.post-item .post-date { font-family: var(--mono); color: var(--text-faint); font-size: 0.8rem; }
 .post-item h3 { margin: 6px 0; }
 .post-item p { color: var(--text-muted); margin: 0; }
 
 article.post-body { max-width: 680px; margin: 0 auto; }
 article.post-body h1 { margin-bottom: 4px; }
-article.post-body .post-meta { color: var(--text-muted); margin-bottom: 32px; }
+article.post-body .post-meta { font-family: var(--mono); color: var(--text-faint); font-size: 0.85rem; margin-bottom: 32px; }
 
 /* ---------- Comments ---------- */
 .comments-section {
@@ -414,7 +512,7 @@ article.post-body .post-meta { color: var(--text-muted); margin-bottom: 32px; }
 footer.site-footer {
   border-top: 1px solid var(--border);
   padding: 40px 0;
-  color: var(--text-muted);
+  color: var(--text-faint);
   font-size: 0.88rem;
 }
 footer.site-footer .wrap {
@@ -423,7 +521,8 @@ footer.site-footer .wrap {
   flex-wrap: wrap;
   gap: 12px;
 }
-footer.site-footer a { color: var(--text-muted); }
+footer.site-footer a { color: var(--text-muted); font-weight: 600; }
+footer.site-footer a:hover { color: var(--accent); }
 
 /* ---------- Contact form ---------- */
 .contact-form { max-width: 480px; }
@@ -439,9 +538,9 @@ footer.site-footer a { color: var(--text-muted); }
 .form-row input[type="email"],
 .form-row textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 11px 13px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--card-bg);
   color: var(--text);
   font-family: var(--font);
@@ -470,122 +569,120 @@ footer.site-footer a { color: var(--text-muted); }
 .contact-form .btn:disabled { opacity: 0.6; cursor: default; }
 
 .form-status { margin: 14px 0 0; font-size: 0.9rem; min-height: 1.3em; }
-.form-status.success { color: var(--accent-dark); }
-.form-status.error { color: #b3261e; }
+.form-status.success { color: var(--good); }
+.form-status.error { color: var(--bad); }
 
-.summary { 
-  background:#FFFFFF; 
-  border:1px solid #E1EBE2;
-  border-radius:22px; 
-  padding:24px 26px; 
-  box-shadow:0 1px 1px color-mix(in srgb, #0F211A 5%, transparent); 
-  margin:0 0 12px; }
-.summary h2 { margin-top:0; font-size:20px; }
-.summary ul { margin-bottom:0; }
-.summary li::marker { color:12%; }
+/* ==========================================================================
+   Docs prose (docs.html, privacy.html)
+   Ported from the standalone VocoGogo help page and scoped to .docs-content so
+   it cannot reach the site shell — an earlier version of this block redefined
+   :root, body and .wrap globally, which pulled every page down to the help
+   page's 760px column.
+   ========================================================================== */
 
-:root {
-    --bg:#FBFCF6; --surface:#FFFFFF; --surface-2:#EEF6F0; --border:#E1EBE2;
-    --ink:#0F211A; --accent:#0C7D5D; --accent-ink:#FFFFFF; --zest:#F07319;
-    --ink-soft:  color-mix(in srgb, var(--ink) 62%, var(--bg) 38%);
-    --ink-faint: color-mix(in srgb, var(--ink) 40%, var(--bg) 60%);
-    --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--surface) 88%);
-    --zest-soft:   color-mix(in srgb, var(--zest) 16%, var(--surface) 84%);
-    --wash-mint: color-mix(in srgb, var(--accent) 13%, transparent);
-    --wash-zest: color-mix(in srgb, var(--zest) 12%, transparent);
-    --lift: 0 1px 1px color-mix(in srgb, var(--ink) 5%, transparent),
-            0 12px 28px -18px color-mix(in srgb, var(--ink) 55%, transparent);
-    --r-lg:22px; --r-md:14px; --r-pill:999px;
-    --display:"Bricolage Grotesque", system-ui, sans-serif;
-    --ui:"Instrument Sans", system-ui, -apple-system, sans-serif;
-    --mono:"DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg:#08130F; --surface:#0F1E19; --surface-2:#172C24; --border:#223A31;
-      --ink:#E9F4EC; --accent:#46DDA3; --accent-ink:#04221A; --zest:#FFA24D;
-    }
-  }
-  * { box-sizing:border-box; }
-  body {
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:var(--ui); font-size:16px; line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  body::before {
-    content:""; position:fixed; inset:-20vh -10vw auto; height:90vh; z-index:-1; pointer-events:none;
-    background:
-      radial-gradient(46vw 46vw at 12% 22%, var(--wash-mint), transparent 62%),
-      radial-gradient(40vw 40vw at 92% 6%, var(--wash-zest), transparent 60%);
-  }
-  .wrap { max-width:760px; margin:0 auto; padding:34px 22px 90px; }
+/* Intro paragraph under a docs heading. (.lead stays the hero's own style.) */
+.docs-content .lede {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin: 0 0 14px;
+}
 
-  header.top { display:flex; align-items:center; gap:11px; margin-bottom:54px; flex-wrap:wrap; }
-  .mark { width:30px; height:30px; border-radius:10px; flex-shrink:0;
-          background:linear-gradient(140deg, var(--accent), var(--zest));
-          display:grid; place-items:center; }
-  .mark span { width:9px; height:9px; border-radius:50%; background:var(--surface); }
-  .wordmark { font-family:var(--display); font-weight:800; font-size:23px; letter-spacing:-.035em; }
-  header.top nav { margin-left:auto; display:flex; flex-wrap:wrap; gap:18px; font-size:14px; font-weight:600; }
-  header.top nav a { color:var(--ink-soft); text-decoration:none; }
-  header.top nav a:hover { color:var(--accent); }
+/* ---------- Numbered steps ---------- */
+.docs-content ol.steps {
+  list-style: none;
+  counter-reset: s;
+  padding: 0;
+  margin: 22px 0;
+}
+.docs-content ol.steps li {
+  counter-increment: s;
+  position: relative;
+  padding-left: 52px;
+  margin-bottom: 24px;
+}
+.docs-content ol.steps li::before {
+  content: counter(s);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+}
+.docs-content ol.steps li strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 3px;
+}
 
-  h1 { font-family:var(--display); font-weight:800; letter-spacing:-.04em;
-       font-size:clamp(34px,6.5vw,50px); line-height:1.05; margin:0 0 16px; }
-  .lede { font-size:clamp(17px,2.4vw,19px); color:var(--ink-soft); margin:0 0 14px; max-width:60ch; }
+/* ---------- Answer key (Yes / No / No answer) ---------- */
+.docs-content .keyrow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.docs-content .pill {
+  flex-shrink: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+}
+.docs-content .pill.yes  { background: var(--good); color: #FFFFFF; }
+.docs-content .pill.no   { background: var(--bad-soft); color: var(--bad); }
+.docs-content .pill.none { background: var(--bg-alt); color: var(--text-muted); }
 
-  h2 { font-family:var(--display); font-weight:700; letter-spacing:-.025em;
-       font-size:clamp(23px,3.4vw,28px); margin:56px 0 14px; }
-  h3 { font-family:var(--display); font-weight:700; letter-spacing:-.02em;
-       font-size:18px; margin:30px 0 8px; }
-  p { margin:0 0 14px; }
-  a { color:var(--accent); text-decoration-thickness:1.5px; text-underline-offset:2px; }
+/* ---------- Inline note ----------
+   Same vocabulary as .card.tip / .card.warn, but reads as an aside in the flow
+   rather than a boxed card. */
+.docs-content .note {
+  border-left: 3px solid var(--zest);
+  background: var(--zest-soft);
+  padding: 14px 18px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 20px 0;
+  font-size: 0.95rem;
+}
+.docs-content .note p:last-child { margin-bottom: 0; }
 
-  .card { background:var(--surface); border:1px solid var(--border);
-          border-radius:var(--r-lg); padding:22px 24px; box-shadow:var(--lift); margin:20px 0; }
-  .card h3:first-child { margin-top:0; }
+/* A plain panel doesn't need the coloured edge that marks a tip or warning. */
+.docs-content .card:not(.tip):not(.warn) { border-left-width: 1px; }
 
-  .steps { list-style:none; counter-reset:s; padding:0; margin:22px 0; }
-  .steps li { counter-increment:s; position:relative; padding-left:52px; margin-bottom:24px; }
-  .steps li::before {
-    content:counter(s); position:absolute; left:0; top:-2px;
-    width:34px; height:34px; border-radius:50%;
-    background:var(--accent); color:var(--accent-ink);
-    font-family:var(--display); font-weight:700; font-size:16px;
-    display:grid; place-items:center;
-  }
-  .steps li strong { display:block; font-size:17px; margin-bottom:3px; }
+/* Inline chip for a UI affordance named in prose, e.g. the deck's menu button. */
+.docs-content .menu {
+  font-family: var(--mono);
+  background: var(--bg-alt);
+  border-radius: 8px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
 
-  table { width:100%; border-collapse:collapse; font-size:14.5px; margin:14px 0; }
-  th, td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); }
-  th { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:400; }
-  td { font-family:var(--mono); font-size:13.5px; }
-  .tablewrap { overflow-x:auto; }
+/* Wide tables scroll inside their own box instead of stretching the page. */
+.tablewrap { overflow-x: auto; }
 
-  code { font-family:var(--mono); font-size:.9em; background:var(--surface-2);
-         padding:2px 6px; border-radius:6px; }
+/* ---------- FAQ ---------- */
+.docs-content dl.faq dt { font-weight: 600; margin-top: 22px; }
+.docs-content dl.faq dd { margin: 6px 0 0; color: var(--text-muted); }
 
-  .keyrow { display:flex; gap:12px; align-items:flex-start; margin-bottom:16px; }
-  .pill { flex-shrink:0; font-family:var(--display); font-weight:700; font-size:14px;
-          padding:5px 14px; border-radius:var(--r-pill); }
-  .pill.yes { background:var(--accent); color:var(--accent-ink); }
-  .pill.no  { background:color-mix(in srgb, #D2472A 12%, var(--surface)); color:#D2472A; }
-  @media (prefers-color-scheme: dark) {
-    .pill.no { background:#3B1A14; color:#FF7A5C; }
-  }
-  .pill.none { background:var(--surface-2); color:var(--ink-soft); }
-
-  .note { border-left:3px solid var(--zest); background:var(--zest-soft);
-          padding:14px 18px; border-radius:0 var(--r-md) var(--r-md) 0; margin:20px 0; font-size:15px; }
-
-  .menu { font-family:var(--mono); font-size:13px; background:var(--surface-2);
-          border-radius:8px; padding:2px 8px; white-space:nowrap; }
-
-  dl.faq dt { font-weight:600; margin-top:22px; }
-  dl.faq dd { margin:6px 0 0; color:var(--ink-soft); }
-
-  footer { margin-top:80px; padding-top:26px; border-top:1px solid var(--border);
-           display:flex; flex-wrap:wrap; gap:16px 26px; align-items:center;
-           font-size:14px; color:var(--ink-faint); }
-  footer a { color:var(--ink-soft); text-decoration:none; font-weight:600; }
-  footer a:hover { color:var(--accent); }
+/* ---------- Summary panel (top of the privacy policy) ---------- */
+.summary {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--lift);
+  margin: 0 0 20px;
+}
+.summary h2 { margin-top: 0; font-size: 1.25rem; }
+.summary ul { margin-bottom: 0; }

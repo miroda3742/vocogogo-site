@@ -37,24 +37,385 @@
     </aside>
 
     <div class="docs-content">
-      <h2 id="getting-started">Getting started</h2>
-      <p>Replace this with real onboarding instructions: first launch, choosing a language pair, and creating your first deck.</p>
+      <h1>Drill the words you keep forgetting.</h1>
+  <p class="lede">
+    VocoGogo is a flashcard drill that pays attention. Within a session, every word carries a
+    weight that decides how often it comes up — miss one and it returns sooner, know it and it
+    fades into the background. Across days, words you've mastered step out of the way and come
+    back just before you'd forget them.
+  </p>
+  <p class="lede">
+    Bring your own vocabulary as a CSV and start in about a minute. Everything stays on your
+    device: no account, no sync, no ads.
+  </p>
+  <p style="color:var(--ink-soft);">
+    New to the app? It shows a short guide the first time you open it, and you can reopen that
+    any time from <em>Settings → How VocoGogo works</em>.
+  </p>
 
-      <h2 id="creating-decks">Creating decks</h2>
-      <p>Explain how to add words manually, import a word list, or start from a built-in starter deck.</p>
+  <h2 id="start">Getting started</h2>
 
-      <h2 id="reviewing">Reviewing &amp; spaced repetition</h2>
-      <p>Explain how the review queue works — how intervals grow as you get a word right, and shrink when you get it wrong.</p>
+  <ol class="steps">
+    <li>
+      <strong>Prepare a CSV</strong>
+      One column holds the language you're translating <em>from</em> (usually English), and
+      one or more columns hold the forms you're learning. An optional column can group words
+      into sets you can switch on and off.
+    </li>
+    <li>
+      <strong>Import it</strong>
+      Open <em>Import</em>, then either pick the file or paste the rows straight into the box.
+      Nothing is saved until you confirm the next step.
+    </li>
+    <li>
+      <strong>Map your columns</strong>
+      Tell VocoGogo which column is the base language, which are study forms, and which
+      (if any) is the group. It guesses sensibly from your headers, so usually you just check
+      it and continue.
+    </li>
+    <li>
+      <strong>Save it</strong>
+      <em>Save deck</em> stores it and leaves whatever you're studying alone;
+      <em>Save &amp; study</em> saves it and switches to it straight away.
+    </li>
+    <li>
+      <strong>Drill</strong>
+      The base word appears alone for a few seconds, then the translation. Answer
+      <strong>Yes</strong> or <strong>No</strong> before the timer runs out.
+    </li>
+  </ol>
 
-      <h2 id="audio">Audio &amp; pronunciation</h2>
-      <p>Document where pronunciation audio comes from and how to record your own if the app supports it.</p>
+  <div class="card">
+    <h3>What a CSV should look like</h3>
+    <p style="color:var(--ink-soft); font-size:15px;">
+      The first row is the header. Column names become the labels shown on the card.
+    </p>
+    <div class="tablewrap">
+      <table>
+        <tr><th>english</th><th>romaji</th><th>kana</th><th>kanji</th><th>group</th></tr>
+        <tr><td>water</td><td>mizu</td><td>みず</td><td>水</td><td>Nature</td></tr>
+        <tr><td>friend</td><td>tomodachi</td><td>ともだち</td><td>友達</td><td>People</td></tr>
+        <tr><td>to eat</td><td>taberu</td><td>たべる</td><td>食べる</td><td>Verbs</td></tr>
+      </table>
+    </div>
+    <p style="margin-bottom:0; font-size:15px; color:var(--ink-soft);">
+      Only two columns are strictly required: one base language and one study form. Everything
+      else is optional. Blank cells show as <code>—</code> on the card. Use quotes around any
+      value containing a comma.
+    </p>
+  </div>
 
-      <h2 id="stats">Stats &amp; streaks</h2>
-      <p>Explain what the stats view shows: words learned, review accuracy, and streaks.</p>
+  <h2 id="weights">How the weighting works</h2>
+  <p>
+    This is the part that makes VocoGogo different from a plain flashcard stack. Each word
+    has a <strong>weight</strong>, and a word's weight is its chance of being picked next — a
+    word at weight 30 comes up roughly ten times as often as one at weight 3.
+  </p>
 
-      <h2 id="faq">FAQ</h2>
-      <p><strong>Does VocoGogo work offline?</strong> Answer here.</p>
-      <p><strong>Can I import my own word lists?</strong> Answer here.</p>
+  <div class="card">
+    <div class="keyrow">
+      <span class="pill yes">Yes</span>
+      <div>Weight drops by the adjustment amount, so the word comes up less often.</div>
+    </div>
+    <div class="keyrow">
+      <span class="pill no">No</span>
+      <div>Weight climbs, so the word comes back around sooner.</div>
+    </div>
+    <div class="keyrow" style="margin-bottom:0">
+      <span class="pill none">No answer</span>
+      <div>Weight is left exactly as it was. Letting the timer run out costs you nothing.</div>
+    </div>
+  </div>
+
+  <h3>New words go first</h3>
+  <p>
+    A word you've never been shown is introduced ahead of the weighted draw — in the order it
+    appears in your file, once each. After that first appearance it's an ordinary word with an
+    ordinary weight, so importing a big batch delays your reviews by one pass through the new
+    words rather than burying them.
+  </p>
+
+  <h3>Finishing a word for the day</h3>
+  <p>
+    Once a word is already sitting at the minimum weight and you answer <strong>Yes</strong>
+    again, it's <em>finished for the day</em> and stops appearing. The counter at the top of
+    the drill screen tracks today's rotation: how many words are in play, and how many you've
+    finished. When everything due today is done you'll get an “All done for today” screen,
+    which also tells you when the next batch arrives.
+  </p>
+
+  <div class="note">
+    <strong>Starting weight matters.</strong> New words begin at the starting weight you set.
+    Keep it comfortably above the minimum — if it sits at or below the minimum, a word is
+    finished the very first time you answer it correctly.
+  </div>
+
+  <h2 id="schedule">Coming back over days</h2>
+  <p>
+    Weights decide what happens <em>within</em> a session. The review schedule decides whether
+    a word turns up <em>at all</em> today, which is what keeps a deck that has outgrown a
+    single sitting manageable.
+  </p>
+  <p>
+    Each time you finish a word for the day it moves one step up a ladder and rests for longer
+    before returning. Answer <strong>No</strong> and it drops back one step and rejoins today's
+    pool immediately.
+  </p>
+
+  <div class="card">
+    <h3>The ladder</h3>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Times finished</th><th>Rests for</th></tr>
+        <tr><td>1st</td><td>1 day</td></tr>
+        <tr><td>2nd</td><td>3 days</td></tr>
+        <tr><td>3rd</td><td>7 days</td></tr>
+        <tr><td>4th</td><td>14 days</td></tr>
+        <tr><td>5th and beyond</td><td>30 days</td></tr>
+      </table>
+    </div>
+    <p style="margin-bottom:0; font-size:15px; color:var(--ink-soft);">
+      A resting word rejoins at the minimum weight on the day it's due, ready to be finished
+      again in one correct answer. One wrong answer never wipes out all that progress — it
+      costs a single step.
+    </p>
+  </div>
+
+  <h3>Cramming without breaking the schedule</h3>
+  <p>
+    <em>Go again</em> on the “All done for today” screen revives the current groups' resting
+    words for one extra session. Finishing a word during that session doesn't push it further
+    up the ladder, so cramming can't quietly inflate your review intervals. A
+    <strong>No</strong> still counts, because forgetting a word is real information either way.
+  </p>
+
+  <h3>Spotting a resting word</h3>
+  <p>
+    In <em>Browse</em>, a resting word is labelled with when it's coming back, so a word that
+    isn't showing up in the drill never looks like a bug. Words added today are marked
+    <strong>NEW</strong>.
+  </p>
+
+  <h2>Decks, groups and forms</h2>
+
+  <h3>Decks</h3>
+  <p>
+    Import as many as you like. Tap a deck on the <em>Decks</em> screen to make it the one
+    you're studying, or open its <span class="menu">⋮</span> menu for everything else:
+  </p>
+  <div class="card">
+    <p style="font-size:15px; color:var(--ink-soft); margin-bottom:0;">
+      <strong style="color:var(--ink)">Rename deck</strong> — change the name at any time.<br>
+      <strong style="color:var(--ink)">Export as CSV</strong> — save the word list as a file.<br>
+      <strong style="color:var(--ink)">Reset weights</strong> — every word back to the starting
+      weight and the review schedule cleared, as though the deck were newly imported.<br>
+      <strong style="color:var(--ink)">Delete deck</strong> — remove it and its words for good.
+    </p>
+  </div>
+  <p>Reset and delete both ask for confirmation first, because neither can be undone.</p>
+
+  <h3>Study groups</h3>
+  <p>
+    If your CSV had a group column, you can switch groups on and off. Only words in the active
+    groups are drilled or browsed, which is how you work through one chapter or topic at a
+    time rather than the whole deck at once.
+  </p>
+
+  <h3>Shown forms</h3>
+  <p>
+    Choose which study-language columns actually appear on the card. Learning to read kana but
+    not kanji yet? Turn kanji off and it disappears from the drill without touching your data.
+  </p>
+
+  <h3>Browse, and editing a word</h3>
+  <p>
+    The <em>Browse</em> tab lists every word currently in play, with all its forms, so you can
+    read through a set before drilling it. Tap any word to fix a typo, fill in a missing form,
+    move it to another group, or delete it. Every form in the deck is editable there, including
+    ones you've hidden on the card.
+  </p>
+  <p>
+    Editing the text never disturbs what you know: the word's weight and its place on the
+    review ladder carry straight over.
+  </p>
+
+  <h2 id="update">Updating a deck from a newer CSV</h2>
+  <p>
+    If your word list grows over time, you don't need to start a second deck. On the
+    <em>Import</em> screen, choose an existing deck under <strong>Import into</strong> and the
+    file is merged into it:
+  </p>
+  <div class="card">
+    <p style="font-size:15px; color:var(--ink-soft); margin-bottom:0;">
+      <strong style="color:var(--ink)">Words already in the deck</strong> keep their weight and
+      review schedule, and take their spelling and group from the file.<br>
+      <strong style="color:var(--ink)">Rows you've added since last time</strong> arrive as new
+      words, marked NEW in Browse.<br>
+      <strong style="color:var(--ink)">Words missing from the file</strong> are left alone — an
+      import never deletes anything.
+    </p>
+  </div>
+  <p>
+    Afterwards you get a summary: how many were added, how many matched, and how many were left
+    untouched.
+  </p>
+
+  <h3>Check where each column lands</h3>
+  <p>
+    When you're updating a deck, the mapping table gains a <strong>goes into</strong> column
+    showing which existing column each column of your file feeds. Names are matched ignoring
+    capitals and spacing, so <code>Romaji</code> and <code>romaji</code> are the same column.
+  </p>
+  <div class="tablewrap">
+    <table>
+      <tr><th>Column</th><th>Sample</th><th>Role</th><th>Goes into</th></tr>
+      <tr><td>english</td><td>small</td><td>Base language</td><td></td></tr>
+      <tr><td>romaji</td><td>chiisai</td><td>Study form</td><td>romaji</td></tr>
+      <tr><td>kana</td><td>ちいさい</td><td>Study form</td><td>kana</td></tr>
+      <tr><td>romaij</td><td>chiisai</td><td>Study form</td><td>a new column</td></tr>
+    </table>
+  </div>
+  <p>
+    Anything the deck doesn't recognise is flagged as <strong>a new column</strong> in orange —
+    which is nearly always a misspelled header, as in the last row above. Tap it and pick the
+    column it should have gone into, and the values land there instead of starting a near-empty
+    duplicate. You can override a match the other way too.
+  </p>
+  <div class="note">
+    <strong>An import can't destroy a deck.</strong> It only adds columns, adds words or fills
+    values — it never deletes a word, never clears a column, and a blank cell in the file can't
+    wipe something already there. The worst a mistyped header can do is leave you with a spare
+    column, and pointing it at the right one on the next import tidies that up.
+  </div>
+
+  <h3>How names are matched</h3>
+  <p>
+    Words are matched on the base-language column, and group names are matched the same way, so
+    <code>Unit1</code> and <code>unit1</code> stay one group rather than becoming two. None of
+    it tries to be cleverer than capitals and spacing, which is why <code>bank (money)</code>
+    and <code>bank (river)</code> stay separate words.
+  </p>
+  <p>
+    The flip side: if you <em>rename</em> a base word in your file, the old entry stays put with
+    its history and the new spelling arrives alongside it — delete whichever you don't want from
+    Browse.
+  </p>
+  <p>
+    Exporting a deck as CSV and re-importing it later works too: the exported header is laid
+    out so no remapping is needed.
+  </p>
+
+  <h2 id="backup">Backups — and moving to a new phone</h2>
+  <p>
+    VocoGogo has no account and no cloud sync, so a backup file is how your progress survives a
+    reinstall or moves to a new device. It's under <em>Settings → Backup and restore</em>.
+  </p>
+
+  <div class="card">
+    <h3>Save a backup</h3>
+    <p style="font-size:15px; color:var(--ink-soft);">
+      Writes one <code>.json</code> file holding every deck, every word's weight, ladder
+      position and due date, and your settings, palette and theme. Android's own file picker
+      chooses where it goes — Google Drive, OneDrive, Dropbox or your phone's storage all
+      appear there if they're installed.
+    </p>
+    <h3>Restore from a backup</h3>
+    <p style="font-size:15px; color:var(--ink-soft); margin-bottom:0;">
+      Pick a backup file and VocoGogo tells you what's in it — when it was saved, how many decks
+      and words — before you confirm. Restoring <strong>replaces</strong> everything currently in
+      the app, so it's a move-in rather than a merge.
+    </p>
+  </div>
+
+  <div class="note">
+    <strong>Two files, two jobs.</strong> A <strong>backup</strong> carries your progress, and is
+    what you want before reinstalling. A <strong>CSV export</strong> is just the word list — the
+    file you edit on a computer and bring back through Import, where merging protects the
+    progress already in the app.
+  </div>
+
+  <h2>Settings</h2>
+  <div class="card">
+    <h3>Timing</h3>
+    <p style="font-size:15px; color:var(--ink-soft); margin-bottom:18px;">
+      <strong style="color:var(--ink)">Word shown alone</strong> — how long you get to recall
+      the answer before it's revealed.<br>
+      <strong style="color:var(--ink)">Answer window</strong> — how long the translation stays
+      up waiting for your Yes or No.
+    </p>
+    <h3>Weighting</h3>
+    <p style="font-size:15px; color:var(--ink-soft); margin-bottom:0;">
+      <strong style="color:var(--ink)">Adjustment per answer</strong> — how far each answer
+      moves the weight.<br>
+      <strong style="color:var(--ink)">Starting weight</strong> — where newly imported words
+      begin.<br>
+      <strong style="color:var(--ink)">Minimum</strong> and <strong style="color:var(--ink)">maximum</strong>
+      — the floor and ceiling a weight can reach. Starting weight is always kept between them.
+    </p>
+  </div>
+  <p>
+    <strong>Appearance</strong> offers four palettes — Citrus &amp; mint, Blood orange, Sea
+    glass, Graphite &amp; lime — each in light and dark, plus a System option that follows your
+    phone. <strong>Backup and restore</strong> is covered <a href="#backup">above</a>, and
+    <strong>Help and feedback</strong> reopens the in-app guide or brings you back to this page.
+  </p>
+
+  <h2>During a drill</h2>
+  <p>
+    The drill runs full screen: the title bar, navigation and even the status bar get out of
+    the way so there's nothing but the card. Press <strong>Stop</strong> (or the back gesture)
+    to pause — everything comes back and you can pick up again with <em>Resume drill</em>.
+    Leaving the app pauses the drill too, so it never runs on quietly in the background.
+  </p>
+
+  <h2>Questions</h2>
+  <dl class="faq">
+    <dt>Where is my data stored?</dt>
+    <dd>Only on your device, in the app's own private storage — unless you save a backup
+      somewhere yourself. See the <a href="privacy.html">privacy policy</a> for the details.</dd>
+
+    <dt>I'm getting a new phone. How do I keep my progress?</dt>
+    <dd>Save a backup to a cloud drive on the old phone, install VocoGogo on the new one, then
+      use <em>Settings → Backup and restore → Restore from a backup</em>. Weights, review dates
+      and settings all come across.</dd>
+
+    <dt>Can I use it on two devices at once?</dt>
+    <dd>Not in sync. A backup is a snapshot, and restoring replaces what's on the device you
+      restore to, so it's best to treat one device as the one you study on.</dd>
+
+    <dt>Some of my words aren't appearing today.</dt>
+    <dd>Words you've finished are resting until their due date — that's the
+      <a href="#schedule">review schedule</a> at work. Browse shows when each one returns, and
+      <em>Go again</em> drills them anyway without disturbing the schedule.</dd>
+
+    <dt>My word list has grown. Do I start again?</dt>
+    <dd>No — import the whole file and pick the existing deck under <em>Import into</em>.
+      Matching words keep their progress and only new rows are added. See
+      <a href="#update">updating a deck</a>.</dd>
+
+    <dt>I mistyped a column header and now the deck has extra columns.</dt>
+    <dd>Import the file again into the same deck, and in the <strong>goes into</strong> column
+      point the stray column at the one it belongs to. The duplicate columns fold back together
+      and the values move into place. Nothing is lost in the meantime — see
+      <a href="#update">updating a deck</a>.</dd>
+
+    <dt>My import didn't work.</dt>
+    <dd>Check that the file has a header row, that at least one base column and one form
+      column have values, and that any value containing a comma is wrapped in quotes.</dd>
+
+    <dt>Can a card show more than one script at once?</dt>
+    <dd>Yes — every column you mapped as a study form appears on the card, so romaji, kana and
+      kanji can all show together. Trim the list under <em>Shown forms</em>.</dd>
+
+    <dt>A word keeps coming back even though I know it.</dt>
+    <dd>It needs to reach the minimum weight first, then one more Yes to finish it for the day
+      and move it up the ladder. Raising <em>Adjustment per answer</em> gets there in fewer
+      correct answers.</dd>
+
+    <dt>I made a typo in one of my words.</dt>
+    <dd>Open <em>Browse</em> and tap the word. Correcting the text doesn't reset what you know
+      about it.</dd>
+  </dl>
     </div>
   </div>
 </section>
